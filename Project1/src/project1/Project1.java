@@ -1,77 +1,132 @@
 package project1;
 import java.util.Scanner;
 import java.util.Random;
+import java.util.ArrayList;
+
+/*
+S A
+CTS 285
+Project 1
+Card Dealer
+
+*/
 
 public class Project1 {
     
-    public static void showHand(int[] hand) {
-        for(int i = 0; i < hand.length; ++i) {
-            System.out.print(hand[i] + " ");
+    public static void showHand(ArrayList<String> hand) {
+        for(int i = 0; i < hand.size(); ++i) {
+            System.out.print(hand.get(i) + " ");
         }
         System.out.println();
     }
     
-    public static void sleeveCard(int[] sleeve, Scanner scnr) {
-        int card = 0;
-        for(int i = 0; i < sleeve.length; ++i) {
-            while(card < 1 || card > 10){            
-                System.out.print("Pick a card(1-10) to sleeve? ");
-                card = scnr.nextInt();
-            }
-            sleeve[i] = card;
-            showSleeve(sleeve);
-        }
-    }
-    
-    public static void showSleeve(int[] sleeve) {
+    public static void showSleeve(ArrayList<String> sleeve) {
         System.out.print("Sleeved card: ");
-        for(int i = 0; i < sleeve.length; ++i) {
-            System.out.print(sleeve[i] + " ");
+        for(int i = 0; i < sleeve.size(); ++i) {
+            System.out.print(sleeve.get(i) + " ");
         }
+        System.out.println();
     }
 
-    public static void deal(int[] deck, int[] dealer, int[] player, int handSize) {
-        Random rnd = new Random();
-        int card;
+    public static void deal(ArrayList<String> deck,
+                            ArrayList<String> player,
+                            ArrayList<String> dealer,
+                            int handSize) {
+        String plucked, card2;
+        
         for(int i = 0; i < handSize; ++i) {
-            for(int j = 0; j < handSize; ++j) {
-                card = rnd.nextInt(40);
-                player[j] = deck[card];
-                ++i;
-                card = rnd.nextInt(40);
-                dealer[j] = deck[card];
-                ++i;
-            }
-        }
-        System.out.print("Player: ");
-        showHand(player);
-        System.out.print("Dealer: ");
-        showHand(dealer);
+            plucked = deck.get(0); //take from top of the deck
+            deck.remove(0); //remove card from top of deck
+            player.add(plucked); //place in player's hand
+             
+            plucked = deck.get(0); //tale card from top of the deck
+            deck.remove(0); //remove card from top of the deck
+            dealer.add(plucked); //place in dealer's hand.          
+        }               
     }
+    
+    public static void createDeck(ArrayList<String> deck) {
+            //diamonds
+            deck.add("K♦");
+            deck.add("Q♦");
+            deck.add("J♦");
+            deck.add("10♦");
+            deck.add("9♦");
+            deck.add("8♦");
+            deck.add("7♦");
+            deck.add("6♦");
+            deck.add("5♦");
+            deck.add("4♦");
+            deck.add("3♦");
+            deck.add("2♦");
+            deck.add("A♦");
+            //hearts
+            deck.add("K♥");
+            deck.add("Q♥");
+            deck.add("J♥");
+            deck.add("10♥");
+            deck.add("9♥");
+            deck.add("8♥");
+            deck.add("7♥");
+            deck.add("6♥");
+            deck.add("5♥");
+            deck.add("4♥");
+            deck.add("3♥");
+            deck.add("2♥");
+            deck.add("A♥");
+            //clubs
+            deck.add("K♣");
+            deck.add("Q♣");
+            deck.add("J♣");
+            deck.add("10♣");
+            deck.add("9♣");
+            deck.add("8♣");
+            deck.add("7♣");
+            deck.add("6♣");
+            deck.add("5♣");
+            deck.add("4♣");
+            deck.add("3♣");
+            deck.add("2♣");
+            deck.add("A♣");
+            //spades
+            deck.add("K♠");
+            deck.add("Q♠");
+            deck.add("J♠");
+            deck.add("10♠");
+            deck.add("9♠");
+            deck.add("8♠");
+            deck.add("7♠");
+            deck.add("6♠");
+            deck.add("5♠");
+            deck.add("4♠");
+            deck.add("3♠");
+            deck.add("2♠");
+            deck.add("A♠");        
+    }
+    
+    public static void showBothHands(ArrayList<String> player, 
+                                     ArrayList<String> cpu) {
+        System.out.print("Player's hand: ");
+        showHand(player);
+        System.out.print("Dealer's hand: ");
+        showHand(cpu);
+    }
+    
     public static void main(String[] args) {
-        final int sleeveSize = 1;
-        final int handSize = 2;
-        Scanner scnr = new Scanner(System.in);
+        final int SLEEVE_SIZE = 1,//how many cards player can sleeve.
+                  HAND_SIZE = 2; //how many cards to deal to each player  
         
-        int[] deck = {1,1,1,1,
-                      2,2,2,2,
-                      3,3,3,3,
-                      4,4,4,4,
-                      5,5,5,5,
-                      6,6,6,6,
-                      7,7,7,7,
-                      8,8,8,8,
-                      9,9,9,9,
-                      10,10,10,10}; //custom deck.
+        Scanner scnr = new Scanner(System.in);             
         
-        int[] sleeve = new int[sleeveSize];
-        int[] playerHand =  new int[handSize];
-        int[] cpuHand =  new int[handSize];
-        sleeveCard(sleeve, scnr);
-        //deal(deck, cpuHand, playerHand, handSize);
+        ArrayList<String> deck = new ArrayList<>(); //for deck of cards.
+        createDeck(deck); //create a deck of playing cards.
         
+        ArrayList<String> player = new ArrayList<>(); //the player's hand
+        ArrayList<String> sleeve = new ArrayList<>(); //the player's sleeve.
         
-        
-        
+        ArrayList<String> cpu = new ArrayList<>(); //the cpu's hand.
+
+        deal(deck,player,cpu,HAND_SIZE); //deal the cards        
+        showBothHands(player,cpu); //show hands
     }    
 }
