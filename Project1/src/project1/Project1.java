@@ -20,6 +20,14 @@ public class Project1 {
         System.out.println();
     }
     
+    public static void showTable(ArrayList<String> hand) {
+        System.out.print("Table: ");
+        for(int i = 0; i < hand.size(); ++i) {
+            System.out.print(hand.get(i) + " ");
+        }
+        System.out.println();
+    }
+    
     public static void showSleeve(ArrayList<String> sleeve) {
         System.out.print("Sleeved card: ");
         for(int i = 0; i < sleeve.size(); ++i) {
@@ -27,11 +35,31 @@ public class Project1 {
         }
         System.out.println();
     }
+    
+    public static void dealTableCards(ArrayList<String> deck) {
+        ArrayList<String> table = new ArrayList<>(); //table cards
+        String card;
+        deck.remove(0);
+        for(int i = 0; i < 3; ++i) { //Flop
+            card = deck.get(0);
+            deck.remove(0);
+            table.add(card);
+        }
+        for(int i = 0; i < 2; ++i) { //Turn and River.
+            deck.remove(0);
+            card = deck.get(0);
+            table.add(card);
+            deck.remove(0);
+        }
+        
+        showTable(table);
+    }
 
     public static void deal(ArrayList<String> deck,
                             ArrayList<String> player,
                             ArrayList<String> dealer,
                             int handSize) {
+        
         String plucked, card2;
         
         for(int i = 0; i < handSize; ++i) {
@@ -128,5 +156,7 @@ public class Project1 {
 
         deal(deck,player,cpu,HAND_SIZE); //deal the cards        
         showBothHands(player,cpu); //show hands
+        
+        dealTableCards(deck); //deal flop, turn and river cards.
     }    
 }
